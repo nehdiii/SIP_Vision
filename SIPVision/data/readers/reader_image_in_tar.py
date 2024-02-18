@@ -1,6 +1,7 @@
 """ A dataset reader that reads tarfile based datasets
 
 This reader can extract image samples from:
+
 * a single tar of image files
 * a folder of multiple tarfiles containing imagefiles
 * a tar of tars containing image files
@@ -38,17 +39,17 @@ def extract_tarinfos(
 ):
     extensions = get_img_extensions(as_set=True) if not extensions else set(extensions)
     root_is_tar = False
-    #if os.path.isfile(root):
-    assert os.path.splitext(root)[-1].lower() == '.tar'
-    tar_filenames = [root]
-    root , root_name = os.path.split(root)
-    root_name = os.path.splitext(root_name)[0]
-    root_is_tar = True
+    if os.path.isfile(root):
+        assert os.path.splitext(root)[-1].lower() == '.tar'
+        tar_filenames = [root]
+        root , root_name = os.path.split(root)
+        root_name = os.path.splitext(root_name)[0]
+        root_is_tar = True
     # TODO : Problem in the case folder of tars should be treated 
-    #else:
-    #    root_name = root.strip(os.path.sep).split(os.path.sep)[-1]
-    #    print("ok")
-    #    tar_filenames = glob(os.path.join(root, '*.tar'), recursive=True)
+    else:
+        root_name = root.strip(os.path.sep).split(os.path.sep)[-1]
+        print("ok")
+        tar_filenames = glob(os.path.join(root, '*.tar'), recursive=True)
     
     num_tars = len(tar_filenames)
     tar_bytes = sum([os.path.getsize(f) for f in tar_filenames])
